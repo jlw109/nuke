@@ -6,25 +6,36 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using JetBrains.Annotations;
 using Nuke.Common.Utilities;
+using Nuke.Common.Utilities.Collections;
 
 namespace Nuke.Common.Execution
 {
     internal static class TargetDefinitionLoader
     {
-        public static IReadOnlyCollection<TargetDefinition> GetExecutingTargets(NukeBuild build)
+        public static IReadOnlyCollection<TargetDefinition> GetExecutingTargets(NukeBuild build, [CanBeNull] string[] invokedTargetNames = null)
         {
             ControlFlow.Assert(build.TargetDefinitions.All(x => !x.Name.EqualsOrdinalIgnoreCase(BuildExecutor.DefaultTarget)),
                 $"The name '{BuildExecutor.DefaultTarget}' cannot be used as target name.");
 
-            var invokedTargets = build.InvokedTargets.Select(x => GetDefinition(x, build)).ToList();
+            var invokedTargets = invokedTargetNames?.Select(x => GetDefinition(x, build)).ToList() ?? new List<TargetDefinition>();
             var executingTargets = GetUnfilteredExecutingTargets(build, invokedTargets);
+
             var skippedTargets = executingTargets
                 .Where(x => !invokedTargets.Contains(x) &&
                             build.SkippedTargets != null &&
                             (build.SkippedTargets.Length == 0 ||
                              build.SkippedTargets.Contains(x.Name, StringComparer.OrdinalIgnoreCase))).ToList();
-            skippedTargets.ForEach(x => x.Conditions.Add(() => false));
+
+            skippedTargets.ForEach(x => x.Skip = true);
+
+            var wantSkip = new Dictionary<TargetDefinition, List<TargetDefinition>>();
+
+            executingTargets
+                .Where(x => x.DependencyBehavior == DependencySkipBehavior.SkipDependencies)
+                .Where(x => x.Conditions.Any(y => !y()))
+                .ForEach(x => { SkipTargetAndDependencies(x, invokedTargets, executingTargets, wantSkip); });
 
             string[] GetNames(IEnumerable<TargetDefinition> targets)
                 => targets.Select(x => x.Name).ToArray();
@@ -34,6 +45,31 @@ namespace Nuke.Common.Execution
             ReflectionService.SetValue(build, nameof(NukeBuild.ExecutingTargets), GetNames(executingTargets.Except(skippedTargets)));
 
             return executingTargets;
+        }
+
+        private static void SkipTargetAndDependencies(
+            TargetDefinition targetDefinition,
+            IReadOnlyCollection<TargetDefinition> invokedTargets,
+            IReadOnlyCollection<TargetDefinition> executingTargets,
+            IDictionary<TargetDefinition, List<TargetDefinition>> wantSkip)
+        {
+            targetDefinition.Skip = true;
+            foreach (var dep in targetDefinition.TargetDefinitionDependencies.Where(y => !invokedTargets.Contains(y)))
+            {
+                var wantSkipTarget = wantSkip.GetValueOrDefault(dep) ?? new List<TargetDefinition>();
+                var dependOn = executingTargets.Where(y =>
+                    y != targetDefinition && y.TargetDefinitionDependencies.Contains(dep) && !wantSkipTarget.Contains(y));
+                if (dependOn.Any())
+                {
+                    var list = wantSkip.GetValueOrDefault(dep) ?? new List<TargetDefinition>();
+                    list.Add(targetDefinition);
+                    wantSkip[dep] = list;
+                }
+                else
+                {
+                    SkipTargetAndDependencies(dep, invokedTargets, executingTargets, wantSkip);
+                }
+            }
         }
 
         private static TargetDefinition GetDefinition(
@@ -55,6 +91,12 @@ namespace Nuke.Common.Execution
             }
 
             return targetDefinition;
+        }
+
+        private static Dictionary<TargetDefinition, TargetDefinition[]> Test(NukeBuild build, IReadOnlyCollection<Target> invokedTargets)
+        {
+            var result = new Dictionary<TargetDefinition, TargetDefinition[]>();
+            return result;
         }
 
         private static List<TargetDefinition> GetUnfilteredExecutingTargets(NukeBuild build, IReadOnlyCollection<TargetDefinition> invokedTargets)
