@@ -80,7 +80,7 @@ namespace Nuke.Common.Tools.VsWhere
         public virtual bool? UTF8 { get; internal set; }
         /// <summary><p>A version range for instances to find. Example: [15.0,16.0) will find versions 15.*.</p></summary>
         public virtual Format Format { get; internal set; }
-        /// <summary><p>The name of a property to return. Defaults <see cref="Format"/> to <see cref="Nuke.Common.Tools.VsWhere.Format.value"/>.Use delimiters <em>'.'</em>, <em>'/'</em>, or <em>'_'</em> to separate object and property names. Example: <em>properties.nickname</em> will return the <em>nickname</em> property under <em>properties</em>.</p></summary>
+        /// <summary><p>The name of a property to return. Defaults <see cref="Format"/> to <see cref="Nuke.Common.Tools.VsWhere.Format.value"/>. Use delimiters <em>'.'</em>, <em>'/'</em>, or <em>'_'</em> to separate object and property names. Example: <em>properties.nickname</em> will return the <em>nickname</em> property under <em>properties</em>.</p></summary>
         public virtual string Property { get; internal set; }
         protected override Arguments ConfigureArguments(Arguments arguments)
         {
@@ -558,7 +558,7 @@ namespace Nuke.Common.Tools.VsWhere
         }
         #endregion
         #region Property
-        /// <summary><p><em>Sets <see cref="VsWhereSettings.Property"/>.</em></p><p>The name of a property to return. Defaults <see cref="Format"/> to <see cref="Nuke.Common.Tools.VsWhere.Format.value"/>.Use delimiters <em>'.'</em>, <em>'/'</em>, or <em>'_'</em> to separate object and property names. Example: <em>properties.nickname</em> will return the <em>nickname</em> property under <em>properties</em>.</p></summary>
+        /// <summary><p><em>Sets <see cref="VsWhereSettings.Property"/>.</em></p><p>The name of a property to return. Defaults <see cref="Format"/> to <see cref="Nuke.Common.Tools.VsWhere.Format.value"/>. Use delimiters <em>'.'</em>, <em>'/'</em>, or <em>'_'</em> to separate object and property names. Example: <em>properties.nickname</em> will return the <em>nickname</em> property under <em>properties</em>.</p></summary>
         [Pure]
         public static VsWhereSettings SetProperty(this VsWhereSettings toolSettings, string property)
         {
@@ -566,7 +566,7 @@ namespace Nuke.Common.Tools.VsWhere
             toolSettings.Property = property;
             return toolSettings;
         }
-        /// <summary><p><em>Resets <see cref="VsWhereSettings.Property"/>.</em></p><p>The name of a property to return. Defaults <see cref="Format"/> to <see cref="Nuke.Common.Tools.VsWhere.Format.value"/>.Use delimiters <em>'.'</em>, <em>'/'</em>, or <em>'_'</em> to separate object and property names. Example: <em>properties.nickname</em> will return the <em>nickname</em> property under <em>properties</em>.</p></summary>
+        /// <summary><p><em>Resets <see cref="VsWhereSettings.Property"/>.</em></p><p>The name of a property to return. Defaults <see cref="Format"/> to <see cref="Nuke.Common.Tools.VsWhere.Format.value"/>. Use delimiters <em>'.'</em>, <em>'/'</em>, or <em>'_'</em> to separate object and property names. Example: <em>properties.nickname</em> will return the <em>nickname</em> property under <em>properties</em>.</p></summary>
         [Pure]
         public static VsWhereSettings ResetProperty(this VsWhereSettings toolSettings)
         {

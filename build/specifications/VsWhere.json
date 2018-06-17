@@ -91,7 +91,7 @@
             "name": "Property",
             "type": "string",
             "format": "-property {value}",
-            "help": "The name of a property to return. Defaults <see cref=\"Format\"/> to <see cref=\"Nuke.Common.Tools.VsWhere.Format.value\"/>.Use delimiters <em>'.'</em>, <em>'/'</em>, or <em>'_'</em> to separate object and property names. Example: <em>properties.nickname</em> will return the <em>nickname</em> property under <em>properties</em>."
+            "help": "The name of a property to return. Defaults <see cref=\"Format\"/> to <see cref=\"Nuke.Common.Tools.VsWhere.Format.value\"/>. Use delimiters <em>'.'</em>, <em>'/'</em>, or <em>'_'</em> to separate object and property names. Example: <em>properties.nickname</em> will return the <em>nickname</em> property under <em>properties</em>."
           }
         ]
       }

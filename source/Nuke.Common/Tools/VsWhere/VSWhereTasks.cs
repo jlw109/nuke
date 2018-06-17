@@ -15,7 +15,7 @@ namespace Nuke.Common.Tools.VsWhere
         /// <summary>
         /// Settings to get the path to the directory of the latest installation.
         /// </summary>
-        public static VsWhereSettings DefaultGetInstallationPath => new VsWhereSettings()
+        public static VsWhereSettings DefaultVsWhereGetInstallationPathSettings => new VsWhereSettings()
             .SetProducts("*")
             .SetProperty("installationPath")
             .EnableLatest()
@@ -24,19 +24,19 @@ namespace Nuke.Common.Tools.VsWhere
         /// <summary>
         /// Settings to get the path to the directory of the latest VC installation.
         /// </summary>
-        public static VsWhereSettings DefaultGetVCInstallationPath => DefaultGetInstallationPath
+        public static VsWhereSettings DefaultVsWhereGetVCInstallationPath => DefaultVsWhereGetInstallationPathSettings
             .SetRequires("Microsoft.VisualStudio.Component.VC.Tools.x86.x64");
 
         /// <summary>
         /// Settings to get the path to the directory of the latest MSBuild installation. 
         /// </summary>
-        public static VsWhereSettings DefaultGetMSBuildInstallationPath => DefaultGetInstallationPath
+        public static VsWhereSettings DefaultVsWhereGetMSBuildInstallationPath => DefaultVsWhereGetInstallationPathSettings
             .SetRequires("Microsoft.Component.MSBuild");
 
         /// <summary>
         /// Settings to get the path to the directory of the latest VSTest installation.
         /// </summary>
-        public static VsWhereSettings DefaultGetVsTestInstallationPath => DefaultGetInstallationPath
+        public static VsWhereSettings DefaultVsWhereGetVsTestInstallationPath => DefaultVsWhereGetInstallationPathSettings
             .SetRequires("Microsoft.VisualStudio.Workload.ManagedDesktop", "Microsoft.VisualStudio.Workload.Web")
             .EnableRequiresAny();
 
