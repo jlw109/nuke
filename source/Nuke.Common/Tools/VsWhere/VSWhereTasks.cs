@@ -24,19 +24,26 @@ namespace Nuke.Common.Tools.VsWhere
         /// <summary>
         /// Settings to get the path to the directory of the latest VC installation.
         /// </summary>
-        public static VsWhereSettings DefaultVsWhereGetVCInstallationPath => DefaultVsWhereGetInstallationPathSettings
+        public static VsWhereSettings DefaultVsWhereGetVCInstallationPathSettings => DefaultVsWhereGetInstallationPathSettings
             .SetRequires("Microsoft.VisualStudio.Component.VC.Tools.x86.x64");
 
         /// <summary>
         /// Settings to get the path to the directory of the latest MSBuild installation. 
         /// </summary>
-        public static VsWhereSettings DefaultVsWhereGetMSBuildInstallationPath => DefaultVsWhereGetInstallationPathSettings
+        public static VsWhereSettings DefaultVsWhereGetMSBuildInstallationPathSettings => DefaultVsWhereGetInstallationPathSettings
             .SetRequires("Microsoft.Component.MSBuild");
+
+        /// <summary>
+        /// Settings to get the path to the directory of the latest MSBuild installation where the .NET Core workload is available.
+        /// </summary>
+        public static VsWhereSettings DefaultVsWhereGetMSBuildINetCoreInstallationPathSettings => DefaultVsWhereGetInstallationPathSettings
+            .SetRequires("Microsoft.Component.MSBuild")
+            .SetRequires("Microsoft.Net.Core.Component.SDK");
 
         /// <summary>
         /// Settings to get the path to the directory of the latest VSTest installation.
         /// </summary>
-        public static VsWhereSettings DefaultVsWhereGetVsTestInstallationPath => DefaultVsWhereGetInstallationPathSettings
+        public static VsWhereSettings DefaultVsWhereGetVsTestInstallationPathSettings => DefaultVsWhereGetInstallationPathSettings
             .SetRequires("Microsoft.VisualStudio.Workload.ManagedDesktop", "Microsoft.VisualStudio.Workload.Web")
             .EnableRequiresAny();
 
